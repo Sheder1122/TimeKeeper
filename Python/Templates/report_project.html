@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Отчёт по проекту</h2>
+<form method="POST" class="row g-3 mb-4">
+    <div class="col-md-6">
+        <label>Проект</label>
+        <select name="project_name" class="form-select" required>
+            <option value="">-- Выберите --</option>
+            {% for proj in projects %}
+                <option value="{{ proj }}" {% if proj == selected_project %}selected{% endif %}>{{ proj }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-md-6">
+        <button type="submit" class="btn btn-primary mt-4">Показать</button>
+    </div>
+</form>
+
+{% if report_data %}
+    <div class="card">
+        <div class="card-header bg-success text-white">
+            <h4>{{ selected_project }}</h4>
+        </div>
+        <div class="card-body">
+            <p><strong>Всего часов:</strong> {{ report_data.total_hours }}</p>
+            <p><strong>Сотрудники:</strong></p>
+            <ul>
+                {% for emp, hours in report_data.employees %}
+                    <li>{{ emp }} – {{ hours }} ч</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% elif request.method == 'POST' %}
+    <div class="alert alert-warning">Нет данных по этому проекту</div>
+{% endif %}
+{% endblock %}

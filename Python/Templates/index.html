@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Все записи</h2>
+
+<form method="GET" class="row g-3 mb-4">
+    <div class="col-md-4">
+        <label>Дата с</label>
+        <input type="date" name="date_from" class="form-control" value="{{ date_from }}">
+    </div>
+    <div class="col-md-4">
+        <label>Дата по</label>
+        <input type="date" name="date_to" class="form-control" value="{{ date_to }}">
+    </div>
+    <div class="col-md-4">
+        <button type="submit" class="btn btn-primary mt-4">Фильтровать</button>
+        <a href="/" class="btn btn-secondary mt-4">Сбросить</a>
+    </div>
+</form>
+
+{% if records %}
+    <table class="table table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th><th>Сотрудник</th><th>Дата</th><th>Часы</th><th>Проект</th><th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for rec in records %}
+            <tr>
+                <td>{{ rec.id }}</td>
+                <td>{{ rec.employee_name }}</td>
+                <td>{{ rec.date }}</td>
+                <td>{{ rec.hours }}</td>
+                <td>{{ rec.project_name }}</td>
+                <td>
+                    <a href="/edit/{{ rec.id }}" class="btn btn-sm btn-warning">Изменить</a>
+                    <form method="POST" action="/delete/{{ rec.id }}" style="display:inline;">
+                        <button class="btn btn-sm btn-danger" onclick="return confirm('Точно удалить?')">Удалить</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <div class="alert alert-info">Записей нет. Добавьте первую!</div>
+{% endif %}
+{% endblock %}

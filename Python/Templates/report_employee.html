@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Отчёт по сотруднику</h2>
+<form method="POST" class="row g-3 mb-4">
+    <div class="col-md-4">
+        <label>Сотрудник</label>
+        <select name="employee_name" class="form-select" required>
+            <option value="">-- Выберите --</option>
+            {% for emp in employees %}
+                <option value="{{ emp }}" {% if emp == selected_employee %}selected{% endif %}>{{ emp }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-md-3">
+        <label>Дата с (не обязательно)</label>
+        <input type="date" name="date_from" class="form-control" value="{{ date_from }}">
+    </div>
+    <div class="col-md-3">
+        <label>Дата по (не обязательно)</label>
+        <input type="date" name="date_to" class="form-control" value="{{ date_to }}">
+    </div>
+    <div class="col-md-2">
+        <button type="submit" class="btn btn-primary mt-4">Показать</button>
+    </div>
+</form>
+
+{% if report_data %}
+    <div class="card">
+        <div class="card-header bg-info text-white">
+            <h4>{{ selected_employee }}</h4>
+        </div>
+        <div class="card-body">
+            <p><strong>Всего часов:</strong> {{ report_data.total_hours }}</p>
+            <p><strong>Проекты:</strong></p>
+            <ul>
+                {% for project, hours in report_data.projects %}
+                    <li>{{ project }} – {{ hours }} ч</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% elif request.method == 'POST' %}
+    <div class="alert alert-warning">Нет данных за выбранный период</div>
+{% endif %}
+{% endblock %}
