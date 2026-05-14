@@ -19,6 +19,10 @@
 </form>
 
 {% if records %}
+    <div class="alert alert-secondary d-flex justify-content-between align-items-center mb-3">
+        <span>Найдено записей: <strong>{{ records|length }}</strong></span>
+        <span class="fs-5">Итого часов за период: <strong class="text-primary">{{ total_hours }} ч</strong></span>
+    </div>
     <table class="table table-bordered">
         <thead class="table-dark">
             <tr>
